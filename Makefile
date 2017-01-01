@@ -1,5 +1,4 @@
-# ARCHS = armv7 arm64
-
+export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 7.0
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = GATTLogger
