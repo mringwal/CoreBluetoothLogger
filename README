@@ -1,0 +1,29 @@
+# iOS CoreBluetooth GATT Logger
+
+Logs all CoreBluetooth API calls 
+
+## Requirements
+
+- iOS Device with Jailbreak
+- Xcode
+- theos build system
+
+## Compile
+
+	export THEOS=/path/to/your/theos/checkout
+	make
+	make package
+
+## Installation
+
+Install .deb file as usual
+a) provide a TCP tunnel, set THEOS_DEVICE_IP and THEOS_DEVICE_PORT, and run make install
+B) manually copy the .deb file to your iOS device. dpkg -i ch.ringwald.gattlogger*
+
+## Usage
+
+- Run app you're interested in
+- Watch syslog messages, e.g. with [deviceconsole](https://github.com/rpetrich/deviceconsole)
+
+
+
