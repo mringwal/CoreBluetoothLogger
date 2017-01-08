@@ -1,9 +1,9 @@
-Package: ch.ringwald.gattlogger
-Name: GATT Logger
+Package: ch.ringwald.corebluetoothlogger
+Name: CoreBluetooth Logger
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 0.1
 Architecture: iphoneos-arm
-Description: Logs application GATT / CoreBleuetooth calls
+Description: Show CoreBluetooth actions in syslog
 Maintainer: Matthias Ringwald
 Author: Matthias Ringwald
 Section: Tweaks
