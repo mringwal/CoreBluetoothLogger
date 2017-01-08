@@ -1,6 +1,6 @@
 # iOS CoreBluetooth GATT Logger
 
-Logs all CoreBluetooth API calls 
+Logs CoreBluetooth API calls to syslog
 
 ## Requirements
 
@@ -16,7 +16,8 @@ Logs all CoreBluetooth API calls
 
 ## Installation
 
-Install .deb file as usual
+Install .deb file as usual, e.g.:
+
 a) provide a TCP tunnel, set THEOS_DEVICE_IP and THEOS_DEVICE_PORT, and run make install
 B) manually copy the .deb file to your iOS device. dpkg -i ch.ringwald.gattlogger*
 
@@ -24,6 +25,5 @@ B) manually copy the .deb file to your iOS device. dpkg -i ch.ringwald.gattlogge
 
 - Run app you're interested in
 - Watch syslog messages, e.g. with [deviceconsole](https://github.com/rpetrich/deviceconsole)
-
-
+- Uninstall when done - might leak memory :)
 
