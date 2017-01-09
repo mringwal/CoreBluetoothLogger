@@ -1,4 +1,4 @@
-# iOS CoreBluetooth GATT Logger
+# iOS CoreBluetooth Logger
 
 Show CoreBluetooth actions in syslog
 
