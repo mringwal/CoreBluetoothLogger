@@ -6,7 +6,7 @@ Show CoreBluetooth actions in syslog
 
 - iOS Device with Jailbreak
 - Xcode
-- theos build system
+- [theos build system](https://github.com/theos/theos)
 
 ## Compile
 
@@ -18,8 +18,8 @@ Show CoreBluetooth actions in syslog
 
 Install .deb file as usual, e.g.:
 
-a) provide a TCP tunnel, set THEOS_DEVICE_IP and THEOS_DEVICE_PORT, and run make install
-B) manually copy the .deb file to your iOS device. dpkg -i ch.ringwald.gattlogger*
+- provide a TCP tunnel, set THEOS_DEVICE_IP and THEOS_DEVICE_PORT, and run make install, or
+- copy the .deb file to your iOS device and install manually.  `dpkg -i ch.ringwald.corebluetoothlogger*`
 
 ## Usage
 
