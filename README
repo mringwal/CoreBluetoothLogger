@@ -1,6 +1,6 @@
 # iOS CoreBluetooth GATT Logger
 
-Logs CoreBluetooth API calls to syslog
+Show CoreBluetooth actions in syslog
 
 ## Requirements
 
