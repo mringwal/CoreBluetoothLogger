@@ -179,7 +179,11 @@ static void peripheralActive(CBPeripheral * peripheral){
 #else
 	NSLog(@"CBL: Found peripheral %@, RSSI %d, adv data %@", [peripheral shortDescription], [RSSI intValue], advertisementData);
 #endif
-	[self.delegate centralManager:central didDiscoverPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
+	if ([self.delegate respondsToSelector:@selector(centralManager:didDiscoverPeripheral:advertisementData:RSSI:)]){
+		[self.delegate centralManager:central didDiscoverPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
+	} else {
+		NSLog(@"CBL: %@ does not implement centralManager:didDiscoverPeripheral:advertisementData:RSSI:", [self.delegate class]);
+	}
 }
 - (void)centralManager:(CBCentralManager *)central 
 didFailToConnectPeripheral:(CBPeripheral *)peripheral 
@@ -189,7 +193,11 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
 #else
     NSLog(@"CBL: Connection to peripheral %@ failed, error %@", [peripheral shortDescription], error);
 #endif
-    [self.delegate centralManager:central didFailToConnectPeripheral:peripheral error:error];
+	if ([self.delegate respondsToSelector:@selector(centralManager:didFailToConnectPeripheral:error:)]){
+	    [self.delegate centralManager:central didFailToConnectPeripheral:peripheral error:error];
+	} else {
+		NSLog(@"CBL: %@ does not implement centralManager:didFailToConnectPeripheral:error:", [self.delegate class]);
+	}
 }
 - (void)centralManager:(CBCentralManager *)central 
   didConnectPeripheral:(CBPeripheral *)peripheral{
@@ -198,7 +206,11 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
 #else
   	NSLog(@"CBL: Connected to peripheral %@", [peripheral shortDescription]);
 #endif
-  	[self.delegate centralManager:central didConnectPeripheral:peripheral];
+	if ([self.delegate respondsToSelector:@selector(centralManager:didConnectPeripheral:)]){
+	  	[self.delegate centralManager:central didConnectPeripheral:peripheral];
+	} else {
+		NSLog(@"CBL: %@ does not implement centralManager:didConnectPeripheral:", [self.delegate class]);
+	}
 }
 
 - (void)centralManager:(CBCentralManager *)central 
@@ -209,7 +221,11 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
 #else
   	NSLog(@"CBL: Disconnected from peripheral %@", [peripheral shortDescription]);
 #endif
-  	[self.delegate centralManager:central didDisconnectPeripheral:peripheral error:error];
+	if ([self.delegate respondsToSelector:@selector(centralManager:didDisconnectPeripheral:error:)]){
+	  	[self.delegate centralManager:central didDisconnectPeripheral:peripheral error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement centralManager:didDisconnectPeripheral:error:", [self.delegate class]);
+  	}
 }
 @end
 
@@ -241,7 +257,11 @@ didDiscoverServices:(NSError *)error{
 			NSLog(@"     - Service %@ ", [[service UUID] UUIDString]);
 		}
 	}
-	[self.delegate peripheral:peripheral didDiscoverServices:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didDiscoverServices:)]){
+		[self.delegate peripheral:peripheral didDiscoverServices:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didDiscoverServices:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didDiscoverIncludedServicesForService:(CBService *)service 
@@ -265,7 +285,11 @@ didDiscoverIncludedServicesForService:(CBService *)service
 			NSLog(@"     - Included Service %@ ", [[includedService UUID] UUIDString]);
 		}
 	}
-	[self.delegate peripheral:peripheral didDiscoverIncludedServicesForService:service error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didDiscoverIncludedServicesForService:error:)]){
+		[self.delegate peripheral:peripheral didDiscoverIncludedServicesForService:service error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didDiscoverIncludedServicesForService:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didDiscoverCharacteristicsForService:(CBService *)service 
@@ -289,7 +313,11 @@ didDiscoverCharacteristicsForService:(CBService *)service
 			NSLog(@"     - Characteristic %@ - Properties %@", [[characteristic UUID] UUIDString], propertiesDescription(characteristic.properties));
 		}
 	}
-	[self.delegate peripheral:peripheral didDiscoverCharacteristicsForService:service error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didDiscoverCharacteristicsForService:error:)]){
+		[self.delegate peripheral:peripheral didDiscoverCharacteristicsForService:service error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didDiscoverCharacteristicsForService:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic 
@@ -308,7 +336,11 @@ didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
 		NSLog(@"CBL: Discovered descriptors for characteristic %@: list: %@", [[characteristic UUID] UUIDString], [characteristic descriptorDescription]);
 	}
 #endif
-	[self.delegate peripheral:peripheral didDiscoverDescriptorsForCharacteristic:characteristic error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didDiscoverDescriptorsForCharacteristic:error:)]){
+		[self.delegate peripheral:peripheral didDiscoverDescriptorsForCharacteristic:characteristic error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didDiscoverDescriptorsForCharacteristic:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic 
@@ -329,7 +361,11 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 		NSLog(@"CBL: Characteristic %@ new value: %@", [[characteristic UUID] UUIDString], [characteristic.value hexdump]);
 	}
 #endif
-	[self.delegate peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didUpdateValueForCharacteristic:error:)]){
+		[self.delegate peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didUpdateValueForCharacteristic:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didUpdateValueForDescriptor:(CBDescriptor *)descriptor 
@@ -348,7 +384,11 @@ didUpdateValueForDescriptor:(CBDescriptor *)descriptor
 		NSLog(@"CBL: Descriptor %@ new: value %@", [[descriptor UUID] UUIDString], [descriptor.value hexdump]);
 	}
 #endif
-	[self.delegate peripheral:peripheral didUpdateValueForDescriptor:descriptor error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didUpdateValueForDescriptor:error:)]){
+		[self.delegate peripheral:peripheral didUpdateValueForDescriptor:descriptor error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didUpdateValueForDescriptor:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didWriteValueForCharacteristic:(CBCharacteristic *)characteristic 
@@ -367,7 +407,11 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
 		NSLog(@"CBL: Write characteristic %@ succeeded", [[characteristic UUID] UUIDString]);
 	}
 #endif
-	[self.delegate peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didWriteValueForCharacteristic:error:)]){
+		[self.delegate peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didWriteValueForCharacteristic:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didWriteValueForDescriptor:(CBDescriptor *)descriptor 
@@ -386,7 +430,11 @@ didWriteValueForDescriptor:(CBDescriptor *)descriptor
 		NSLog(@"CBL: Write descriptor %@ succeeded", [[descriptor UUID] UUIDString]);
 	}
 #endif
-	[self.delegate peripheral:peripheral didWriteValueForDescriptor:descriptor error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didWriteValueForDescriptor:error:)]){
+		[self.delegate peripheral:peripheral didWriteValueForDescriptor:descriptor error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didWriteValueForDescriptor:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral 
 didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic 
@@ -405,7 +453,11 @@ didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic
 		NSLog(@"CBL: enable/disable notifications for characteristic %@ succeeded", [[characteristic UUID] UUIDString]);
 	}
 #endif
-	[self.delegate peripheral:peripheral didUpdateNotificationStateForCharacteristic:characteristic error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheral:didUpdateNotificationStateForCharacteristic:error:)]){
+		[self.delegate peripheral:peripheral didUpdateNotificationStateForCharacteristic:characteristic error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didUpdateNotificationStateForCharacteristic:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error{
 	peripheralActive(peripheral);
@@ -414,13 +466,30 @@ didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic
 	} else {
 		NSLog(@"CBL: Reading RSSI succeeded, value %d", [peripheral.RSSI intValue]);
 	}
-	[self.delegate peripheralDidUpdateRSSI:peripheral error:error];
+	if ([self.delegate respondsToSelector:@selector(peripheralDidUpdateRSSI:error:)]){
+		[self.delegate peripheralDidUpdateRSSI:peripheral error:error];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheralDidUpdateRSSI:error:", [self.delegate class]);
+  	}
 }
 - (void)peripheralDidUpdateName:(CBPeripheral *)peripheral{
-	[self.delegate peripheralDidUpdateName:peripheral];
+	NSLog(@"CBL: New name: %@", peripheral.name);
+	if ([self.delegate respondsToSelector:@selector(peripheralDidUpdateName:)]){
+		[self.delegate peripheralDidUpdateName:peripheral];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheralDidUpdateName:", [self.delegate class]);
+  	}
 }
 - (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray *)invalidatedServices{
-	[self.delegate peripheral:peripheral didModifyServices:invalidatedServices];
+	NSLog(@"CBL: Services modified, list:");
+	for (CBService * includedService in invalidatedServices){
+		NSLog(@"     - Invalidated Service %@ ", [[includedService UUID] UUIDString]);
+	}
+	if ([self.delegate respondsToSelector:@selector(peripheral:didModifyServices:)]){
+		[self.delegate peripheral:peripheral didModifyServices:invalidatedServices];
+  	} else {
+		NSLog(@"CBL: %@ does not implement peripheral:didModifyServices:", [self.delegate class]);
+  	}
 }
 @end
 

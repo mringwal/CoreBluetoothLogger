@@ -19,7 +19,7 @@ Show CoreBluetooth actions in syslog
 Install .deb file as usual, e.g.:
 
 a) provide a TCP tunnel, set THEOS_DEVICE_IP and THEOS_DEVICE_PORT, and run make install
-B) manually copy the .deb file to your iOS device. dpkg -i ch.ringwald.gattlogger*
+b) manually copy the .deb file to your iOS device. dpkg -i ch.ringwald.gattlogger*
 
 ## Usage
 

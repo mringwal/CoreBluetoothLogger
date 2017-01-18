@@ -6,4 +6,3 @@ CoreBluetoothLogger_FILES = Tweak.xm
 CoreBluetoothLogger_FRAMEWORKS = CoreBluetooth
 include $(THEOS_MAKE_PATH)/tweak.mk
 
-
