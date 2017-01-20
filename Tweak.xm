@@ -140,7 +140,7 @@ NSString * propertiesDescription(int properties){
 }
 @end
 
-@implementation CBCharacteristic
+@implementation CBCharacteristic (CBLogger)
 -(NSString *) descriptorDescription{
 	return uuidListIndirect(self.descriptors);
 }
