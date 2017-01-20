@@ -310,7 +310,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
 #endif
 	if (!error){
 		for (CBCharacteristic * characteristic in service.characteristics){
-			NSLog(@"     - Characteristic %@ - Properties %@", [[characteristic UUID] UUIDString], propertiesDescription(characteristic.properties));
+			NSLog(@"     - Characteristic %@ (%p) - Properties %@", [[characteristic UUID] UUIDString], characteristic, propertiesDescription(characteristic.properties));
 		}
 	}
 	if ([self.delegate respondsToSelector:@selector(peripheral:didDiscoverCharacteristicsForService:error:)]){
@@ -333,7 +333,7 @@ didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
 	if (error){
 		NSLog(@"CBL: Failed to discover descriptors for characteristic %@, error=%@", [[characteristic UUID] UUIDString], error);
 	} else {
-		NSLog(@"CBL: Discovered descriptors for characteristic %@: list: %@", [[characteristic UUID] UUIDString], [characteristic descriptorDescription]);
+		NSLog(@"CBL: Discovered descriptors for characteristic %@ (%p): list: %@", [[characteristic UUID] UUIDString], characteristic, [characteristic descriptorDescription]);
 	}
 #endif
 	if ([self.delegate respondsToSelector:@selector(peripheral:didDiscoverDescriptorsForCharacteristic:error:)]){
@@ -358,7 +358,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 	if (error){
 		NSLog(@"CBL: Characteristic %@ value update failed, error %@", [[characteristic UUID] UUIDString], error);
 	} else {
-		NSLog(@"CBL: Characteristic %@ new value: %@", [[characteristic UUID] UUIDString], [characteristic.value hexdump]);
+		NSLog(@"CBL: Characteristic %@ (%p) new value: %@", [[characteristic UUID] UUIDString], characteristic, [characteristic.value hexdump]);
 	}
 #endif
 	if ([self.delegate respondsToSelector:@selector(peripheral:didUpdateValueForCharacteristic:error:)]){
@@ -381,7 +381,7 @@ didUpdateValueForDescriptor:(CBDescriptor *)descriptor
 	if (error){
 		NSLog(@"CBL: Descriptor %@ value update failed, error %@", [[descriptor UUID] UUIDString], error);
 	} else {
-		NSLog(@"CBL: Descriptor %@ new: value %@", [[descriptor UUID] UUIDString], [descriptor.value hexdump]);
+		NSLog(@"CBL: Descriptor %@ (Characteristic %@ %p) new: value %@", [[descriptor UUID] UUIDString], [[descriptor.characteristic UUID] UUIDString], descriptor.characteristic, [descriptor.value hexdump]);
 	}
 #endif
 	if ([self.delegate respondsToSelector:@selector(peripheral:didUpdateValueForDescriptor:error:)]){
@@ -606,7 +606,7 @@ static int inside_init;
 	NSLog(@"-[CBPeripheral discoverDescriptorsForCharacteristic:], peripheral=%@, characteristic UUID=%@",
 		[self shortDescription], [[characteristic UUID] UUIDString]);
 #else
-	NSLog(@"CBL: Discover descriptors for characteristic %@", [[characteristic UUID] UUIDString]);
+	NSLog(@"CBL: Discover descriptors for characteristic %@ (%p)", [[characteristic UUID] UUIDString], characteristic);
 #endif
 	%orig;
 }
@@ -616,7 +616,7 @@ static int inside_init;
 	NSLog(@"-[CBPeripheral readValueForCharacteristic:], peripheral=%@, characteristic UUID=%@",
 		[self shortDescription], [[characteristic UUID] UUIDString]);
 #else
-	NSLog(@"CBL: Read characteristic %@", [[characteristic UUID] UUIDString]);
+	NSLog(@"CBL: Read characteristic %@ (%p)", [[characteristic UUID] UUIDString], characteristic);
 #endif
 	%orig;
 }
@@ -626,7 +626,7 @@ static int inside_init;
 	NSLog(@"-[CBPeripheral readValueForDescriptor:], peripheral=%@, descriptor UUID=%@",
 		[self shortDescription], [[descriptor UUID] UUIDString]);
 #else
-	NSLog(@"CBL: Read descriptor %@", [[descriptor UUID] UUIDString]);
+	NSLog(@"CBL: Read descriptor %@ (characteristic %@ %p)", [[descriptor UUID] UUIDString], [[descriptor.characteristic UUID] UUIDString], descriptor.characteristic);
 #endif
 	%orig;
 }
@@ -642,10 +642,10 @@ static int inside_init;
 #else
 	switch (type){
 		case CBCharacteristicWriteWithResponse:
-			NSLog(@"CBL: Write characteristic %@ with response, value: %@",  [[characteristic UUID] UUIDString], [data hexdump]);
+			NSLog(@"CBL: Write characteristic %@ (%p) with response, value: %@",  [[characteristic UUID] UUIDString], characteristic, [data hexdump]);
 			break;
 		case CBCharacteristicWriteWithoutResponse:
-			NSLog(@"CBL: Write characteristic %@ without response, value: %@",  [[characteristic UUID] UUIDString], [data hexdump]);
+			NSLog(@"CBL: Write characteristic %@ (%p) without response, value: %@",  [[characteristic UUID] UUIDString], characteristic, [data hexdump]);
 			break;
 		default:
 			break;
@@ -660,7 +660,7 @@ static int inside_init;
 	NSLog(@"-[CBPeripheral writeValue:forDescriptor:], peripheral=%@, characteristic UUID=%@, data=%@",
 		[self shortDescription], [[descriptor UUID] UUIDString], data);
 #else
-	NSLog(@"CBL: Write descriptor %@, value: %@",  [[descriptor UUID] UUIDString], [data hexdump]);
+	NSLog(@"CBL: Write descriptor %@ (characteristic %@ %p), value: %@",  [[descriptor UUID] UUIDString], [[descriptor.characteristic UUID] UUIDString], descriptor.characteristic, [data hexdump]);
 #endif
 	%orig;
 }
@@ -672,9 +672,9 @@ static int inside_init;
 		[self shortDescription], [[characteristic UUID] UUIDString], enabled);
 #else
 	if (enabled){
-		NSLog(@"CBL: Enable notification for characteristic %@", [[characteristic UUID] UUIDString]);
+		NSLog(@"CBL: Enable notification for characteristic %@ (%p)", [[characteristic UUID] UUIDString], characteristic);
 	} else {
-		NSLog(@"CBL: Disable notification for characteristic %@", [[characteristic UUID] UUIDString]);
+		NSLog(@"CBL: Disable notification for characteristic %@ (%p)", [[characteristic UUID] UUIDString], characteristic);
 	}
 #endif
 	%orig;
