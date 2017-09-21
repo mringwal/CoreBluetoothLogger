@@ -381,7 +381,11 @@ didUpdateValueForDescriptor:(CBDescriptor *)descriptor
 	if (error){
 		NSLog(@"CBL: Descriptor %@ value update failed, error %@", [[descriptor UUID] UUIDString], error);
 	} else {
-		NSLog(@"CBL: Descriptor %@ (Characteristic %@ %p) new: value %@", [[descriptor UUID] UUIDString], [[descriptor.characteristic UUID] UUIDString], descriptor.characteristic, [descriptor.value hexdump]);
+		if ([descriptor.value respondsToSelector:@selector(hexdump)]){
+			NSLog(@"CBL: Descriptor %@ (Characteristic %@ %p) new: value %@", [[descriptor UUID] UUIDString], [[descriptor.characteristic UUID] UUIDString], descriptor.characteristic, [descriptor.value hexdump]);
+		} else {
+			NSLog(@"CBL: Descriptor %@ (Characteristic %@ %p) new: value %@", [[descriptor UUID] UUIDString], [[descriptor.characteristic UUID] UUIDString], descriptor.characteristic, descriptor.value);
+		}
 	}
 #endif
 	if ([self.delegate respondsToSelector:@selector(peripheral:didUpdateValueForDescriptor:error:)]){
